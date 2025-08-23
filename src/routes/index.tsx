@@ -1,6 +1,11 @@
+import DashboardLayout from "@/components/layout/DashboardLayout.tsx";
 import { Loader } from "@/components/Loader.tsx";
 import React, { lazy, Suspense } from "react";
-import { createBrowserRouter } from "react-router";
+import { createBrowserRouter, Navigate } from "react-router";
+import adminSidebar from "./adminSidebar.tsx";
+import { generateRoutes } from "@/utils/generateRoutes.tsx";
+import { WithAuth } from "@/utils/WithAuth.tsx";
+import userSidebar from "./userSidebar.tsx";
 
 const App = lazy(() => import("../App.tsx"));
 const Home = lazy(() => import("../pages/Home.tsx"));
@@ -9,7 +14,9 @@ const Contact = lazy(() => import("../pages/Contact.tsx"));
 const Faq = lazy(() => import("../pages/Faq.tsx"));
 const Features = lazy(() => import("../pages/Features.tsx"));
 const Pricing = lazy(() => import("../pages/Pricing.tsx"));
-
+const SignIn = lazy(() => import("../pages/auth/SignIn.tsx"));
+const SignUp = lazy(() => import("../pages/auth/SignUp.tsx"));
+const Unauthorize = lazy(() => import("../pages/Unauthorize.tsx"));
 
 export const router = createBrowserRouter([
   {
@@ -65,5 +72,39 @@ export const router = createBrowserRouter([
         ),
       },
     ],
+  },
+  {
+    path: "/admin",
+    Component: () => <Suspense fallback={<Loader />}>{React.createElement(WithAuth(DashboardLayout, "admin"))}</Suspense>,
+    children: [
+      { index: true, element: <Navigate to="/admin/overview" /> },
+      ...generateRoutes(adminSidebar).map(({ path, Component }) => ({
+        path,
+        Component: Component ? () => <Suspense fallback={<Loader />}>{React.createElement(WithAuth(Component, "admin"))}</Suspense> : undefined,
+      })),
+    ],
+  },
+  {
+    path: "/user",
+    Component: () => <Suspense fallback={<Loader />}>{React.createElement(WithAuth(DashboardLayout, "user"))}</Suspense>,
+    children: [
+      { index: true, element: <Navigate to="/user/overview" /> },
+      ...generateRoutes(userSidebar).map(({ path, Component }) => ({
+        path,
+        Component: Component ? () => <Suspense fallback={<Loader />}>{React.createElement(WithAuth(Component, "user"))}</Suspense> : undefined,
+      })),
+    ],
+  },
+  {
+    path: "/login",
+    Component: SignIn,
+  },
+  {
+    path: "/register",
+    Component: SignUp,
+  },
+  {
+    path: "/unauthorized",
+    Component: Unauthorize,
   },
 ]);
