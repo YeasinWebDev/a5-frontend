@@ -2,22 +2,23 @@ import { useState } from "react";
 import { useTransactionsQuery } from "@/redux/feature/userApi";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import { Loader } from "@/components/Loader";
 
 function Transactions() {
   const [page, setPage] = useState(1);
   const [type, setType] = useState("");
-  const [startDate, setStartDate] = useState();
-  const [endDate, setEndDate] = useState();
+  const [startDate, setStartDate] = useState<Date | null>();
+  const [endDate, setEndDate] = useState<Date | null>();
 
   const { data, isLoading } = useTransactionsQuery({
     page,
-    limit: 1,
+    limit: 5,
     type: type || undefined,
     startDate: startDate || undefined,
     endDate: endDate || undefined,
   });
 
-  if (isLoading) return <p className="text-center">Loading...</p>;
+  if (isLoading) return <Loader />;
 
   const transactions = data?.data.transactions || [];
   const pagination = data?.data.pagination || {};
@@ -40,43 +41,53 @@ function Transactions() {
           <option className="dark:bg-black" value="send">
             Send
           </option>
-          <option className="dark:bg-black" value="receive">
-            Receive
+          <option className="dark:bg-black" value="withdraw">
+            withdraw
+          </option>
+          <option className="dark:bg-black" value="topUp">
+            topUp
           </option>
         </select>
 
-        <DatePicker selected={startDate} onChange={(date) => setStartDate(date)} placeholderText="Start Date" className="border p-2 rounded-md" dateFormat="yyyy-MM-dd" />
+        <DatePicker selected={startDate} onChange={(date) => setStartDate(date)} placeholderText="Start Date" className="border p-3 rounded-md" dateFormat="yyyy-MM-dd" />
 
-        <DatePicker selected={endDate} onChange={(date) => setEndDate(date)} placeholderText="End Date" className="border p-2 rounded-md" dateFormat="yyyy-MM-dd" />
+        <DatePicker
+          selected={endDate}
+          onChange={(date) => setEndDate(date)}
+          placeholderText="End Date"
+          className="border p-3 rounded-md"
+          dateFormat="yyyy-MM-dd"
+          minDate={startDate || undefined}
+          disabled={!startDate}
+        />
 
-        <button className="bg-primary p-3 rounded-md" onClick={refreshFilter}>
+        <button className="bg-primary p-3 rounded-md cursor-pointer text-black" onClick={refreshFilter}>
           Clear Filters
         </button>
       </div>
 
-      {/* ✅ Table */}
       <div className="overflow-x-auto p-4 w-full">
-        <table className="w-full border border-gray-300 rounded-lg">
+        <table className="w-full border">
           <thead>
             <tr>
-              <th className="p-3 border">Sender</th>
-              <th className="p-3 border">Receiver</th>
-              <th className="p-3 border">Type</th>
-              <th className="p-3 border">Status</th>
-              <th className="p-3 border">Amount</th>
-              <th className="p-3 border">Date</th>
+              <th className="p-3 border-b">Sender</th>
+              <th className="p-3 border-b">Receiver</th>
+              <th className="p-3 border-b">Type</th>
+              <th className="p-3 border-b">Status</th>
+              <th className="p-3 border-b">Amount</th>
+              <th className="p-3 border-b">Date</th>
             </tr>
           </thead>
           <tbody>
             {transactions.length > 0 ? (
               transactions.map((tx: any) => (
-                <tr key={tx._id} className="text-center">
-                  <td className="p-3 border">{tx.senderName}</td>
-                  <td className="p-3 border">{tx.receiverName}</td>
-                  <td className={`p-3 border font-medium ${tx.type === "send" ? "text-red-600" : "text-green-600"}`}>{tx.type}</td>
-                  <td className={`p-3 border ${tx.status === "completed" ? "text-green-600" : "text-yellow-600"}`}>{tx.status}</td>
-                  <td className="p-3 border">${tx.amount}</td>
-                  <td className="p-3 border">{new Date(tx.createdAt).toLocaleDateString()}</td>
+                <tr key={tx._id} className="text-center cursor-pointer hover:bg-primary/60 transition-all duration-300 ease-in-out">
+                  <td className="p-3 border-b capitalize">{tx.senderName}</td>
+                  <td className="p-3 border-b capitalize">{tx.receiverName}</td>
+                  <td className={`p-3 border-b  font-medium capitalize ${tx.type === "send" ? "text-red-600" : "text-green-600"}`}>{tx.type}</td>
+                  <td className={`p-3 border-b capitalize ${tx.status === "completed" ? "text-green-600" : "text-yellow-600"}`}>{tx.status}</td>
+                  <td className="p-3 border-b ">{tx.amount} BDT</td>
+                  <td className="p-3 border-b ">{new Date(tx.createdAt).toLocaleDateString()}</td>
                 </tr>
               ))
             ) : (

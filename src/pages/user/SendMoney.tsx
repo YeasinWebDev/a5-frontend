@@ -9,14 +9,13 @@ import { useSendMoneyMutation, useSearchUserMutation } from "@/redux/feature/use
 import { useUserData } from "@/components/useUserData";
 import type { SearchResults, SendMoneyForm } from "@/types/user";
 
-
-
 function SendMoney() {
   const { isLoading, userData, refetch } = useUserData();
   const [sendMoney] = useSendMoneyMutation();
   const [searchUser] = useSearchUserMutation();
   const [searchResults, setSearchResults] = useState<SearchResults | null>(null);
   const [searchQuery, setSearchQuery] = useState("");
+  const [isFocused, setIsFocused] = useState(false);
 
   const sendMoneySchema = z.object({
     email: z.string().nonempty("Recipient is required"),
@@ -47,7 +46,7 @@ function SendMoney() {
     const fetchUsers = async () => {
       try {
         const res = await searchUser({ query: searchQuery }).unwrap();
-         setSearchResults(res.data); 
+        setSearchResults(res.data);
       } catch (err) {
         console.error(err);
       }
@@ -65,7 +64,7 @@ function SendMoney() {
       setSearchResults(null);
       setSearchQuery("");
     } catch (error: any) {
-      console.log(error)
+      console.log(error);
       toast.error(error?.data?.message || "Something went wrong");
     }
   };
@@ -86,11 +85,13 @@ function SendMoney() {
           placeholder="Enter recipient email"
           className="w-full px-4 py-2 border rounded-md focus:ring-2 focus:ring-primary focus:outline-none mb-1"
           onChange={(e) => setSearchQuery(e.target.value)}
+          onFocus={() => setIsFocused(true)}
+          onBlur={() => setTimeout(() => setIsFocused(false), 150)}
         />
         {errors.email && <p className="text-red-500 text-sm mb-2">{errors.email.message}</p>}
 
         {/* Search results */}
-        {searchResults && searchResults?.users?.length > 0 && (
+        {isFocused && searchResults && searchResults?.users?.length > 0 && (
           <div className="absolute top-22 w-[16rem] md:top-26 md:w-[25rem] bg-primary p-2 rounded-md h-40 overflow-y-scroll">
             <ul className="max-h-40 overflow-y-auto mb-2 flex flex-col gap-2">
               {searchResults?.users.map((user, index) => (
@@ -119,7 +120,7 @@ function SendMoney() {
         />
         {errors.amount && <p className="text-red-500 text-sm mt-2">{errors.amount.message}</p>}
 
-        <button type="submit" className="mt-4 w-full bg-primary py-2 rounded-md font-semibold hover:bg-primary/90 transition">
+        <button type="submit" className="mt-4 w-full bg-primary py-2 rounded-md font-semibold hover:bg-primary/90 transition cursor-pointer text-black">
           Send Money
         </button>
       </form>

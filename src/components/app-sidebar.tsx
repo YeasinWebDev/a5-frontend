@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Sidebar, SidebarContent, SidebarGroupContent, SidebarHeader, SidebarMenu, SidebarMenuButton } from "@/components/ui/sidebar";
+import { Sidebar, SidebarContent, SidebarFooter, SidebarGroupContent, SidebarHeader, SidebarMenu, SidebarMenuButton } from "@/components/ui/sidebar";
 import { useMeQuery } from "@/redux/feature/authApi";
 import { getSidebarItems } from "@/utils/getSidebarItems";
 import { Link, useLocation } from "react-router";
@@ -27,13 +27,24 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
             <SidebarGroupContent key={index} className="ml-2 w-[10rem]">
               <SidebarMenu>
                 <SidebarMenuButton asChild isActive={isActive} className="text-[1rem]">
-                  <Link to={item.url}> {item.title}</Link>
+                  <Link to={item.url} className={`${item.url.endsWith("/profile") ? "hidden" : ""}`}>
+                    {item.title}
+                  </Link>
                 </SidebarMenuButton>
               </SidebarMenu>
             </SidebarGroupContent>
           );
         })}
       </SidebarContent>
+      <SidebarFooter>
+        <Link to={`/${user?.data?.user?.role}/profile`} className="flex items-center gap-3 p-2 border rounded-md">
+          <h4 className="uppercase bg-primary p-2 rounded-full text-black">{user?.data?.user?.name.slice(0, 2)}</h4>
+          <div>
+            <p className="font-semibold capitalize">{user?.data?.user?.name}</p>
+            <p className="text-gray-500 text-sm">{user?.data?.user?.email}</p>
+          </div>
+        </Link>
+      </SidebarFooter>
     </Sidebar>
   );
 }

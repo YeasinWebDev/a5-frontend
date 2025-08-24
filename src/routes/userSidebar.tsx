@@ -1,3 +1,4 @@
+import Profile from "@/pages/Profile";
 import Deposit from "@/pages/user/Deposit";
 import Overview from "@/pages/user/Overview";
 import SendMoney from "@/pages/user/SendMoney";
@@ -29,6 +30,10 @@ const userSidebar = [
     title:'Transactions',
     url:'/user/transactions',
     component:Transactions
+  },
+  {
+    url:'/user/profile',
+    component:Profile
   }
 ];
 

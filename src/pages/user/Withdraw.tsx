@@ -1,28 +1,23 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import * as z from "zod";
-import { useMeQuery } from "@/redux/feature/authApi";
 import { Loader } from "@/components/Loader";
 import { useWithdrawMutation } from "@/redux/feature/userApi";
 import toast from "react-hot-toast";
 import { useUserData } from "@/components/useUserData";
 import { UserBalance } from "@/components/UserBalance";
+import { useAmountSchema } from "@/validation/AmountValidation";
 
 function Withdraw() {
   const { isLoading, userData, refetch } = useUserData();
   const [withdraw] = useWithdrawMutation();
-
-  const withdrawSchema = z.object({
-    amount: z.number("Amount must be a number").min(1, "Amount must be greater than 0").max(userData.balance, "Amount exceeds your total balance"),
-  });
-
+  const amountSchema = useAmountSchema();
   const {
     register,
     handleSubmit,
     formState: { errors },
     reset,
   } = useForm({
-    resolver: zodResolver(withdrawSchema),
+    resolver: zodResolver(amountSchema),
     defaultValues: {
       amount: 0,
     },
@@ -51,7 +46,7 @@ function Withdraw() {
 
       {userData && <UserBalance balance={userData.balance} />}
 
-      <form onSubmit={handleSubmit(onSubmit)} className="w-full md:max-w-md shadow-lg rounded-xl md:p-6 border">
+      <form onSubmit={handleSubmit(onSubmit)} className="w-full md:max-w-md shadow-lg rounded-xl md:p-6 border ">
         <label className="block font-medium mb-2">Enter Amount</label>
         <input
           type="number"
@@ -61,7 +56,7 @@ function Withdraw() {
         />
         {errors.amount && <p className="text-red-500 text-sm mt-2">{errors.amount.message}</p>}
 
-        <button type="submit" className="mt-4 w-full bg-primary py-2 rounded-md font-semibold hover:bg-primary/90 transition">
+        <button type="submit" className="mt-4 w-full bg-primary py-2 rounded-md font-semibold hover:bg-primary/90 transition cursor-pointer text-black">
           Withdraw
         </button>
       </form>
