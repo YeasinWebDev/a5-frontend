@@ -42,7 +42,53 @@ export const userApi = baseApi.injectEndpoints({
       },
       providesTags: ["User"],
     }),
+
+    // agent
+    cashIn: builder.mutation({
+      query: (data) => ({
+        url: "/api/agent/cash-in",
+        method: "POST",
+        data: data,
+      }),
+      invalidatesTags: ["User"],
+    }),
+    cashOut: builder.mutation({
+      query: (data) => ({
+        url: "/api/agent/cash-out",
+        method: "POST",
+        data: data,
+      }),
+      invalidatesTags: ["User"],
+    }),
+
+    agentTransactions: builder.query({
+      query: (params) => {
+        const searchParams = new URLSearchParams(params as Record<string, string>);
+        return {
+          url: `/api/agent/transactions?${searchParams.toString()}`,
+          method: "GET",
+        };
+      },
+      providesTags: ["User"],
+    }),
+
+    agentStats: builder.query({
+      query: () => ({
+        url: "/api/agent/stats",
+        method: "GET",
+      }),
+    })
   }),
 });
 
-export const { useDepositMutation, useWithdrawMutation, useSendMoneyMutation, useSearchUserMutation, useTransactionsQuery } = userApi;
+export const {
+  useDepositMutation,
+  useWithdrawMutation,
+  useSendMoneyMutation,
+  useSearchUserMutation,
+  useTransactionsQuery,
+  useCashInMutation,
+  useCashOutMutation,
+  useAgentTransactionsQuery,
+  useAgentStatsQuery
+} = userApi;

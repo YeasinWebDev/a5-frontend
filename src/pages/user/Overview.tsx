@@ -62,7 +62,7 @@ export default function Overview() {
             </Link>
           </CardTitle>
         </CardHeader>
-        <CardContent className="md:overflow-x-scroll lg:overflow-hidden w-full">
+        <CardContent className="overflow-x-scroll lg:overflow-hidden w-full">
           <table className="w-full text-left border-collapse">
             <thead>
               <tr className="border-b">

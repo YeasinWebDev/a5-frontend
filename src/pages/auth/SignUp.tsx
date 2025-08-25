@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { signUpSchema, type SignUpFormData } from "@/validation/AuthValidation";
@@ -6,6 +6,7 @@ import { Link, useNavigate } from "react-router";
 import { FiEye, FiEyeOff } from "react-icons/fi";
 import toast from "react-hot-toast";
 import { useRegisterMutation } from "@/redux/feature/authApi";
+import { useUserData } from "@/components/useUserData";
 const SignUp: React.FC = () => {
   const {
     register,
@@ -19,19 +20,26 @@ const SignUp: React.FC = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [createUser] = useRegisterMutation();
   const navigate = useNavigate();
+  const { userData } = useUserData();
 
   const onSubmit = async (data: SignUpFormData) => {
     console.log("SignUp Data:", data);
     try {
       let ans = await createUser(data).unwrap();
       toast.success("User created successfully");
-      console.log(ans)
-      navigate(`/${ans?.data?.role}`)
+      console.log(ans);
+      navigate(`/${ans?.data?.role}`);
       reset();
     } catch (error: any) {
       toast.error(error.data.message);
     }
   };
+
+  useEffect(() => {
+    if (userData?.user) {
+      navigate("/");
+    }
+  }, [userData, navigate]);
 
   return (
     <div className="flex items-center justify-center min-h-screen px-4">

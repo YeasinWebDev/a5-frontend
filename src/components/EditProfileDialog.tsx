@@ -21,7 +21,7 @@ export default function EditProfileDialog({ currentName, currentPhone }: EditPro
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("Updated profile:", { name, phone, oldPassword, newPassword });
+    
     try {
       await updateProfile({ name, phone, oldPassword, newPassword }).unwrap();
       setOpen(false);

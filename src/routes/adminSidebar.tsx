@@ -1,4 +1,5 @@
 import Overview from "@/pages/admin/Overview";
+import Profile from "@/pages/Profile";
 
 const adminSidebar = [
   {
@@ -6,6 +7,10 @@ const adminSidebar = [
     url: "/admin/overview",
     component: Overview,
   },
+    {
+      url:'/admin/profile',
+      component:Profile
+    }
 ];
 
 export default adminSidebar;

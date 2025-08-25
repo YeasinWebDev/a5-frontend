@@ -1,82 +1,24 @@
 import { useState } from "react";
-import { useTransactionsQuery } from "@/redux/feature/userApi";
-import DatePicker from "react-datepicker";
+import { useAgentTransactionsQuery } from "@/redux/feature/userApi";
 import "react-datepicker/dist/react-datepicker.css";
 import { Loader } from "@/components/Loader";
 
 function Transactions() {
   const [page, setPage] = useState(1);
-  const [type, setType] = useState("");
-  const [startDate, setStartDate] = useState<Date | null>();
-  const [endDate, setEndDate] = useState<Date | null>();
-
-  const { data, isLoading } = useTransactionsQuery({
+  const { data, isLoading } = useAgentTransactionsQuery({
     page,
     limit: 5,
-    type: type || undefined,
-    startDate: startDate || undefined,
-    endDate: endDate || undefined,
   });
 
   if (isLoading) return <Loader />;
 
   const transactions = data?.data.transactions || [];
   const pagination = data?.data.pagination || {};
-
-  const refreshFilter = () => {
-    setType("");
-    setStartDate(undefined);
-    setEndDate(undefined);
-  };
+  console.log(pagination,"pagination")
 
   return (
     <div className="flex flex-col items-center">
       <h1 className="text-4xl md:text-5xl font-bold text-primary whitespace-nowrap mb-6">Transactions</h1>
-
-      <div className="flex flex-wrap gap-4 mb-6">
-        <select className="border p-2 rounded-md cursor-pointer" value={type} onChange={(e) => setType(e.target.value)}>
-          <option className="dark:bg-black" value="">
-            All Types
-          </option>
-          <option className="dark:bg-black" value="send">
-            Send
-          </option>
-          <option className="dark:bg-black" value="withdraw">
-            withdraw
-          </option>
-          <option className="dark:bg-black" value="topUp">
-            topUp
-          </option>
-          <option className="dark:bg-black" value="cash-in">
-            cash-in
-          </option>
-          <option className="dark:bg-black" value="cash-out">
-            cash-out
-          </option>
-        </select>
-
-        <DatePicker
-          selected={startDate}
-          onChange={(date) => setStartDate(date)}
-          placeholderText="Start Date"
-          className="border p-3 rounded-md cursor-pointer"
-          dateFormat="yyyy-MM-dd"
-        />
-
-        <DatePicker
-          selected={endDate}
-          onChange={(date) => setEndDate(date)}
-          placeholderText="End Date"
-          className="border p-3 rounded-md cursor-pointer"
-          dateFormat="yyyy-MM-dd"
-          minDate={startDate || undefined}
-          disabled={!startDate}
-        />
-
-        <button className="bg-primary p-3 rounded-md cursor-pointer text-black" onClick={refreshFilter}>
-          Clear Filters
-        </button>
-      </div>
 
       <div className="overflow-x-auto p-4 w-full">
         <table className="w-full border">
@@ -96,21 +38,7 @@ function Transactions() {
                 <tr key={tx._id} className="text-center cursor-pointer hover:bg-primary/10 transition-all duration-300 ease-in-out">
                   <td className="p-3 border-b capitalize">{tx.senderName}</td>
                   <td className="p-3 border-b capitalize">{tx.receiverName}</td>
-                  <td
-                    className={`p-3 border-b  font-medium capitalize ${
-                      tx.type === "cash-in"
-                        ? "text-red-600"
-                        : tx.type === "cash-out"
-                        ? "text-green-600"
-                        : tx.type === "send"
-                        ? "text-yellow-600"
-                        : tx.type === "withdraw"
-                        ? "text-orange-600"
-                        : "text-indigo-600"
-                    }`}
-                  >
-                    {tx.type}
-                  </td>
+                  <td className={`p-3 border-b  font-medium capitalize ${tx.type === "cash-in" ? "text-red-600" : "text-yellow-600"}`}>{tx.type}</td>
                   <td className={`p-3 border-b capitalize ${tx.status === "completed" ? "text-green-600" : "text-yellow-600"}`}>{tx.status}</td>
                   <td className="p-3 border-b ">{tx.amount} BDT</td>
                   <td className="p-3 border-b ">{new Date(tx.createdAt).toLocaleDateString()}</td>

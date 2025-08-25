@@ -1,11 +1,12 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { signInSchema, type SignInFormData } from "@/validation/AuthValidation";
-import { Link, useNavigate} from "react-router";
+import { Link, useNavigate } from "react-router";
 import { FiEye, FiEyeOff } from "react-icons/fi";
 import { useLoginMutation } from "@/redux/feature/authApi";
 import toast from "react-hot-toast";
+import { useUserData } from "@/components/useUserData";
 
 const SignIn: React.FC = () => {
   const {
@@ -20,17 +21,24 @@ const SignIn: React.FC = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [signin] = useLoginMutation();
   const navigate = useNavigate();
+  const { userData } = useUserData();
 
   const onSubmit = async (data: SignInFormData) => {
     try {
       let ans = await signin(data).unwrap();
       reset();
-      navigate(`/${ans?.data?.user?.role}`)
+      navigate(`/${ans?.data?.user?.role}`);
       toast.success("User logged in successfully");
-    } catch (error:any) {
+    } catch (error: any) {
       toast.error(error.data.message);
     }
   };
+
+  useEffect(() => {
+    if (userData?.user) {
+      navigate("/");
+    }
+  }, [userData, navigate]);
 
   return (
     <div className="flex items-center justify-center min-h-screen px-4">

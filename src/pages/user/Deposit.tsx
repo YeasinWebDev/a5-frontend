@@ -42,12 +42,12 @@ function Deposit() {
   }
 
   return (
-    <div className="flex flex-col items-center w-full p-6 justify-center">
+    <div className="flex flex-col items-center w-full md:p-6 justify-center">
       <h1 className="text-4xl md:text-5xl font-bold text-primary whitespace-nowrap mb-6">Deposit Money</h1>
 
       {userData && <UserBalance balance={userData.balance} />}
 
-      <form onSubmit={handleSubmit(onSubmit)} className="w-full md:max-w-md shadow-lg rounded-xl md:p-6 border ">
+      <form onSubmit={handleSubmit(onSubmit)} className="w-full md:max-w-md shadow-lg rounded-xl p-3 md:p-6 border ">
         <label className="block font-medium mb-2">Enter Amount</label>
         <input
           type="number"

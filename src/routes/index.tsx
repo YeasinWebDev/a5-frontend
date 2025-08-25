@@ -6,6 +6,7 @@ import adminSidebar from "./adminSidebar.tsx";
 import { generateRoutes } from "@/utils/generateRoutes.tsx";
 import { WithAuth } from "@/utils/WithAuth.tsx";
 import userSidebar from "./userSidebar.tsx";
+import agentSidebar from "./agentSidebar.tsx";
 
 const App = lazy(() => import("../App.tsx"));
 const Home = lazy(() => import("../pages/Home.tsx"));
@@ -92,6 +93,17 @@ export const router = createBrowserRouter([
       ...generateRoutes(userSidebar).map(({ path, Component }) => ({
         path,
         Component: Component ? () => <Suspense fallback={<Loader />}>{React.createElement(WithAuth(Component, "user"))}</Suspense> : undefined,
+      })),
+    ],
+  },
+  {
+    path: "/agent",
+    Component: () => <Suspense fallback={<Loader />}>{React.createElement(WithAuth(DashboardLayout, "agent"))}</Suspense>,
+    children: [
+      { index: true, element: <Navigate to="/agent/overview" /> },
+      ...generateRoutes(agentSidebar).map(({ path, Component }) => ({
+        path,
+        Component: Component ? () => <Suspense fallback={<Loader />}>{React.createElement(WithAuth(Component, "agent"))}</Suspense> : undefined,
       })),
     ],
   },

@@ -3,7 +3,7 @@
 import type { ComponentType } from "react";
 
 export interface ISidebarItem{
-    title:string;
+    title?:string;
     url:string
     component:ComponentType
 }

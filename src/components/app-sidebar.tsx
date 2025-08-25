@@ -37,8 +37,8 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         })}
       </SidebarContent>
       <SidebarFooter>
-        <Link to={`/${user?.data?.user?.role}/profile`} className="flex items-center gap-3 p-2 border rounded-md">
-          <h4 className="uppercase bg-primary p-2 rounded-full text-black">{user?.data?.user?.name.slice(0, 2)}</h4>
+        <Link to={`/${user?.data?.user?.role}/profile`} className="flex items-center gap-3 p-2 border rounded-md overflow-hidden">
+          <h4 className="uppercase bg-primary w-10 h-10 flex items-center justify-center font-semibold p-2 rounded-full text-black">{user?.data?.user?.name.slice(0, 2)}</h4>
           <div>
             <p className="font-semibold capitalize">{user?.data?.user?.name}</p>
             <p className="text-gray-500 text-sm">{user?.data?.user?.email}</p>
