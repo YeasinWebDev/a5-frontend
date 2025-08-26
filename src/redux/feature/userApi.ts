@@ -52,6 +52,7 @@ export const userApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: ["User"],
     }),
+
     cashOut: builder.mutation({
       query: (data) => ({
         url: "/api/agent/cash-out",
@@ -77,7 +78,52 @@ export const userApi = baseApi.injectEndpoints({
         url: "/api/agent/stats",
         method: "GET",
       }),
-    })
+    }),
+
+    // admin
+    allUsers: builder.query({
+      query: ({ page = 1, limit = 10, role }) => ({
+        url: `/api/admin/allUsers?page=${page}&limit=${limit}&role=${role}`,
+        method: "GET",
+      }),
+    }),
+
+    userStatus: builder.mutation({
+      query: ({ userId, status }) => ({
+        url: `/api/admin/user/${userId}`,
+        method: "PATCH",
+        data: { status },
+      }),
+      invalidatesTags: ["User"],
+    }),
+
+    agentStatus: builder.mutation({
+      query: ({ agentId, status }) => ({
+        url: `/api/admin/agent/${agentId}`,
+        method: "PATCH",
+        data: { status },
+      }),
+      invalidatesTags: ["User"],
+    }),
+
+    allData: builder.query({
+      query: (params) => {
+        const searchParams = new URLSearchParams(params as Record<string, string>);
+        return {
+          url: `/api/admin/allData?${searchParams.toString()}`,
+          method: "GET",
+        };
+      },
+      providesTags: ["User"],
+    }),
+
+    adminStats: builder.query({
+      query: () => ({
+        url: "/api/admin/stats",
+        method: "GET",
+      }),
+      providesTags: ["User"],
+    }),
   }),
 });
 
@@ -90,5 +136,10 @@ export const {
   useCashInMutation,
   useCashOutMutation,
   useAgentTransactionsQuery,
-  useAgentStatsQuery
+  useAgentStatsQuery,
+  useAllUsersQuery,
+  useUserStatusMutation,
+  useAgentStatusMutation,
+  useAllDataQuery,
+  useAdminStatsQuery,
 } = userApi;

@@ -36,8 +36,6 @@ function Navbar() {
     }
   };
 
-  console.log( me,'me')
-
   return (
     <nav className="w-full sticky top-0 py-3 backdrop-blur-md border-b border-gray-200 dark:border-gray-800 z-40">
       <div className="flex justify-between items-center">

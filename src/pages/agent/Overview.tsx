@@ -15,25 +15,25 @@ function Overview() {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
         <Card className="hover:shadow-lg transition rounded-xl cursor-pointer">
           <CardContent className="flex flex-col items-center">
-            <p className="font-semibold">💰 Wallet Balance</p>
+            <p className="font-semibold">Wallet Balance</p>
             <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold mt-2">{data?.data?.balance} BDT</h2>
           </CardContent>
         </Card>
         <Card className="hover:shadow-lg transition rounded-xl cursor-pointer">
           <CardContent className="flex flex-col items-center">
-            <p className="font-semibold">📥 Total Cash In</p>
+            <p className="font-semibold">Total Cash In</p>
             <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold mt-2">{data?.data?.totalCashIn} BDT</h2>
           </CardContent>
         </Card>
         <Card className="hover:shadow-lg transition rounded-xl cursor-pointer">
           <CardContent className="flex flex-col items-center">
-            <p className="font-semibold">📤 Total Cash Out</p>
+            <p className="font-semibold">Total Cash Out</p>
             <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold mt-2">{data?.data?.totalCashOut} BDT</h2>
           </CardContent>
         </Card>
         <Card className="hover:shadow-lg transition rounded-xl cursor-pointer">
           <CardContent className="flex flex-col items-center">
-            <p className="font-semibold">🏆 Commission Earned</p>
+            <p className="font-semibold">Commission Earned</p>
             <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold mt-2">{data?.data?.totalCommission} BDT</h2>
           </CardContent>
         </Card>

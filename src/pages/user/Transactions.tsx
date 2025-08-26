@@ -59,7 +59,7 @@ function Transactions() {
           selected={startDate}
           onChange={(date) => setStartDate(date)}
           placeholderText="Start Date"
-          className="border p-3 rounded-md cursor-pointer"
+          className="border p-3 rounded-md cursor-pointer dark:bg-black"
           dateFormat="yyyy-MM-dd"
         />
 
@@ -67,7 +67,7 @@ function Transactions() {
           selected={endDate}
           onChange={(date) => setEndDate(date)}
           placeholderText="End Date"
-          className="border p-3 rounded-md cursor-pointer"
+          className="border p-3 rounded-md cursor-pointer dark:bg-black"
           dateFormat="yyyy-MM-dd"
           minDate={startDate || undefined}
           disabled={!startDate}

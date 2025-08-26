@@ -37,8 +37,7 @@ function About() {
         <h2 className="text-2xl font-semibold mb-6">Meet Our Team</h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
           {data.map((member,i) => (
-            <div key={i} className="p-6 rounded-2xl bg-white/30 dark:bg-black/30 backdrop-blur-md shadow-md hover:shadow-xl transition-all duration-300 text-center">
-              {/* <div className="w-24 h-24 bg-gray-300 dark:bg-gray-700 rounded-full mx-auto mb-4"></div> */}
+            <div key={i} className="p-6 rounded-2xl bg-white/30 dark:bg-black/30 backdrop-blur-md shadow-md hover:shadow-xl transition-all duration-300 text-center cursor-pointer hover:scale-105">
               <img src={member.image} alt={member.name} className="w-24 h-24 bg-gray-300 dark:bg-gray-700 rounded-full mx-auto mb-4 object-cover" />
               <h3 className="font-bold text-lg">{member.name}</h3>
               <p className="text-gray-700 dark:text-gray-400">{member.role}</p>

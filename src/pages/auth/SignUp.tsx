@@ -37,7 +37,7 @@ const SignUp: React.FC = () => {
 
   useEffect(() => {
     if (userData?.user) {
-      navigate("/");
+      navigate(`/${userData?.user?.role}`);
     }
   }, [userData, navigate]);
 

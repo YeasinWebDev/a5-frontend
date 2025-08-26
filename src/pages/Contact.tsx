@@ -17,15 +17,15 @@ function Contact() {
 
       {/* Contact Info */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12 text-center">
-        <div className="dark:border p-6 rounded-2xl bg-white/30 dark:bg-black/30 backdrop-blur-md shadow-md">
+        <div className="cursor-pointer dark:border p-6 rounded-2xl bg-white/30 dark:bg-black/30 backdrop-blur-md shadow-md hover:scale-105 transition-all duration-300 ease-in-out">
           <h3 className="font-bold text-xl mb-2">Email</h3>
           <p className="text-gray-700 dark:text-gray-300 flex-wrap">support@safepay.com</p>
         </div>
-        <div className="dark:border p-6 rounded-2xl bg-white/30 dark:bg-black/30 backdrop-blur-md shadow-md">
+        <div className="cursor-pointer dark:border p-6 rounded-2xl bg-white/30 dark:bg-black/30 backdrop-blur-md shadow-md hover:scale-105 transition-all duration-300 ease-in-out">
           <h3 className="font-bold text-xl mb-2">Phone</h3>
           <p className="text-gray-700 dark:text-gray-300">+1 (555) 123-4567</p>
         </div>
-        <div className="dark:border p-6 rounded-2xl bg-white/30 dark:bg-black/30 backdrop-blur-md shadow-md">
+        <div className="cursor-pointer dark:border p-6 rounded-2xl bg-white/30 dark:bg-black/30 backdrop-blur-md shadow-md hover:scale-105 transition-all duration-300 ease-in-out">
           <h3 className="font-bold text-xl mb-2">Address</h3>
           <p className="text-gray-700 dark:text-gray-300">123 Finance Street, New York, NY</p>
         </div>
