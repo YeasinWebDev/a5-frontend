@@ -11,7 +11,7 @@ import type { SearchResults, SendMoneyForm } from "@/types/user";
 
 function SendMoney() {
   const { isLoading, userData, refetch } = useUserData();
-  const [sendMoney] = useSendMoneyMutation();
+  const [sendMoney, { isLoading: sendMoneyLoading }] = useSendMoneyMutation();
   const [searchUser] = useSearchUserMutation();
   const [searchResults, setSearchResults] = useState<SearchResults | null>(null);
   const [searchQuery, setSearchQuery] = useState("");
@@ -38,7 +38,7 @@ function SendMoney() {
 
   // Search users when typing
   useEffect(() => {
-    if (searchQuery.length < 3) {
+    if (searchQuery.length < 1) {
       setSearchResults(null);
       return;
     }
@@ -93,21 +93,19 @@ function SendMoney() {
         {/* Search results */}
         {isFocused && searchResults && searchResults?.users?.length > 0 && (
           <div className="absolute top-22 w-[16rem] md:top-26 md:w-[25rem] bg-primary p-2 rounded-md h-40 overflow-y-scroll">
-            <ul className="max-h-40 overflow-y-auto mb-2 flex flex-col gap-2">
-              {searchResults?.users.map((user, index) => (
-                <li
-                  key={index}
-                  className="p-2 cursor-pointer text-black border border-gray-800 rounded-md"
-                  onClick={() => {
-                    setValue("email", user.email);
-                    setSearchResults(null);
-                    setSearchQuery("");
-                  }}
-                >
-                  {user.email}
-                </li>
-              ))}
-            </ul>
+            {searchResults?.users.map((user, index) => (
+              <h2
+                key={index}
+                className="p-2 mb-2 cursor-pointer text-black border border-gray-800 rounded-md"
+                onClick={() => {
+                  setValue("email", user.email);
+                  setSearchResults(null);
+                  setSearchQuery("");
+                }}
+              >
+                {user.email}
+              </h2>
+            ))}
           </div>
         )}
 
@@ -120,7 +118,7 @@ function SendMoney() {
         />
         {errors.amount && <p className="text-red-500 text-sm mt-2">{errors.amount.message}</p>}
 
-        <button type="submit" className="mt-4 w-full bg-primary py-2 rounded-md font-semibold hover:bg-primary/90 transition cursor-pointer text-black">
+        <button type="submit" disabled={sendMoneyLoading} className="mt-4 w-full bg-primary py-2 rounded-md font-semibold hover:bg-primary/90 transition cursor-pointer text-black">
           Send Money
         </button>
       </form>

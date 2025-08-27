@@ -2,29 +2,78 @@ import { Loader } from "@/components/Loader";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useUserData } from "@/components/useUserData";
 import { useTransactionsQuery } from "@/redux/feature/userApi";
+import { driver } from "driver.js";
 import { ArrowDownCircle, ArrowUpCircle, Send } from "lucide-react";
-import { Link } from "react-router";
+import { useEffect } from "react";
+import { Link, useNavigate } from "react-router";
 
 export default function Overview() {
   const { userData } = useUserData();
-
+  const navigate = useNavigate();
   const { data, isLoading } = useTransactionsQuery({
     limit: 5,
   });
 
+  useEffect(() => {
+    const tourStage = localStorage.getItem("tourStage") === "dashboard";
+    const isNewUser = localStorage.getItem("isNewUser") === "true";
+    const userRole = localStorage.getItem("userRole") === "user";
+
+    if (!isLoading && userRole && isNewUser && tourStage) {
+      const tour = driver({
+        showProgress: true,
+        steps: [
+          {
+            element: "#wallet",
+            popover: {
+              title: "Wallet Balance",
+              description: "You can see your wallet balance here.",
+            },
+          },
+          {
+            element: "#quick-actions",
+            popover: {
+              title: "Quick Actions",
+              description: "You can perform quick actions from here (Deposit, Withdraw, Send).",
+            },
+          },
+          {
+            element: "#transactions",
+            popover: {
+              title: "Recent Transactions",
+              description: "You can see your recent transaction history here.",
+            },
+          },
+          {
+            element: "#profile",
+            popover: {
+              title: "Profile",
+              description: "You can see your profile and update from here.",
+            },
+          },
+        ],
+        onDestroyStarted: () => {
+          localStorage.setItem("tourStage", "navbar");
+          navigate(`/`);
+        },
+      });
+
+      tour.drive();
+    }
+  }, [data]);
+
   if (isLoading) return <Loader />;
-  console.log(userData);
 
   return (
     <div className="md:p-6 space-y-6">
       <Card className="bg-gradient-to-r from-primary to-primary/40 text-white shadow-xl rounded-md">
-        <CardContent className="md:p-4 flex flex-col items-center">
+        <CardContent id="wallet" className="md:p-4 flex flex-col items-center">
           <p className="text-lg">Wallet Balance</p>
           <h2 className="text-2xl md:text-4xl font-bold mt-2">{userData.balance} BDT</h2>
         </CardContent>
       </Card>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+      <div id="quick-actions" className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         <Link to="/user/deposit" className="w-full">
           <Card className="hover:shadow-lg transition rounded-xl cursor-pointer">
             <CardContent className="flex flex-col items-center md:p-4">
@@ -53,7 +102,7 @@ export default function Overview() {
         </Link>
       </div>
 
-      <Card className="rounded-md">
+      <Card id="transactions" className="rounded-md">
         <CardHeader>
           <CardTitle className="flex justify-between items-center">
             <span>Recent Transactions</span>
@@ -90,7 +139,7 @@ export default function Overview() {
         </CardContent>
       </Card>
 
-      <Card className="rounded-xl">
+      <Card id="profile" className="rounded-xl">
         <CardContent className="flex items-center justify-between p-6">
           <div className="flex items-center gap-3">
             <h4 className="uppercase bg-primary p-2 rounded-full text-black">{userData?.user?.name.slice(0, 2)}</h4>

@@ -6,7 +6,7 @@ import type { ComponentType } from "react";
 import { Navigate } from "react-router";
 
 export const WithAuth = (Component: ComponentType, userRole?: TUserRole) => {
-  return (props: any) => {
+  return () => {
     const { isLoading, data } = useMeQuery({});
     if (isLoading) {
       return <Loader />;

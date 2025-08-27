@@ -10,8 +10,8 @@ export const signUpSchema = z.object({
   email: z.email("Invalid email"),
   password: z.string().min(6, "Password must be at least 6 characters"),
   phone: z.string().min(11, "Phone number must be at least 11 characters"),
-  role: z.enum(["user", "agent"], {
-    errorMap: () => ({ message: "Role is required" }),
+  role: z.enum(["user", "agent"]).refine((val) => !!val, {
+    message: "Role is required",
   }),
 });
 

@@ -9,7 +9,7 @@ import { useAmountSchema } from "@/validation/AmountValidation";
 
 function Deposit() {
   const { isLoading, userData, refetch } = useUserData();
-  const [deposit] = useDepositMutation();
+  const [deposit, { isLoading: depositLoading }] = useDepositMutation();
   const amountSchema = useAmountSchema();
 
   const {
@@ -57,7 +57,7 @@ function Deposit() {
         />
         {errors.amount && <p className="text-red-500 text-sm mt-2">{errors.amount.message}</p>}
 
-        <button type="submit" className="mt-4 w-full bg-primary py-2 rounded-md font-semibold hover:bg-primary/90 transition cursor-pointer text-black">
+        <button type="submit" disabled={depositLoading} className="mt-4 w-full bg-primary py-2 rounded-md font-semibold hover:bg-primary/90 transition cursor-pointer text-black">
           Withdraw
         </button>
       </form>

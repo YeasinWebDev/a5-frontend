@@ -18,16 +18,18 @@ const SignUp: React.FC = () => {
   });
 
   const [showPassword, setShowPassword] = useState(false);
-  const [createUser] = useRegisterMutation();
+  const [createUser, { isLoading }] = useRegisterMutation();
   const navigate = useNavigate();
   const { userData } = useUserData();
 
   const onSubmit = async (data: SignUpFormData) => {
-    console.log("SignUp Data:", data);
     try {
       let ans = await createUser(data).unwrap();
       toast.success("User created successfully");
       console.log(ans);
+      localStorage.setItem("isNewUser", "true");
+      localStorage.setItem("userRole", ans?.data?.role);
+      localStorage.setItem("tourStage", "dashboard");
       navigate(`/${ans?.data?.role}`);
       reset();
     } catch (error: any) {
@@ -114,8 +116,8 @@ const SignUp: React.FC = () => {
             {errors.role && <p className="text-red-500 text-sm mt-1">{errors.role.message}</p>}
           </div>
 
-          <button type="submit" className="bg-primary transition font-semibold rounded-md p-3 w-full shadow-md cursor-pointer">
-            Sign Up
+          <button type="submit" disabled={isLoading} className="bg-primary transition font-semibold rounded-md p-3 w-full shadow-md cursor-pointer">
+            { isLoading ? "Creating..." : "Sign Up"}
           </button>
         </form>
 

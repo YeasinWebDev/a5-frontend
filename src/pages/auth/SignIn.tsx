@@ -19,7 +19,7 @@ const SignIn: React.FC = () => {
   });
 
   const [showPassword, setShowPassword] = useState(false);
-  const [signin] = useLoginMutation();
+  const [signin, { isLoading }] = useLoginMutation();
   const navigate = useNavigate();
   const { userData } = useUserData();
 
@@ -78,8 +78,8 @@ const SignIn: React.FC = () => {
             {errors.password && <p className="text-red-500 text-sm mt-1">{errors.password.message}</p>}
           </div>
 
-          <button type="submit" className="bg-primary hover:bg-primary/90 transition font-semibold rounded-md p-3 w-full shadow-md cursor-pointer">
-            Sign In
+          <button type="submit" disabled={isLoading} className="bg-primary hover:bg-primary/90 transition font-semibold rounded-md p-3 w-full shadow-md cursor-pointer">
+            { isLoading ? "Signing In..." : "Sign In"}
           </button>
 
           <p className="text-center">

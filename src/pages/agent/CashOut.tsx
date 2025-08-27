@@ -11,10 +11,9 @@ import { useCashSchema } from "@/validation/CashValidation";
 
 function cashOut() {
   const { isLoading, userData, refetch } = useUserData();
-  const [cashOut] = useCashOutMutation();
+  const [cashOut, { isLoading: cashOutLoading }] = useCashOutMutation();
   const [searchUser] = useSearchUserMutation();
   const [searchResults, setSearchResults] = useState<SearchResults | null>(null);
-  const [searchQuery, setSearchQuery] = useState("");
   const [isFocused, setIsFocused] = useState(false);
   const cashOutSchema = useCashSchema();
 
@@ -23,15 +22,18 @@ function cashOut() {
     handleSubmit,
     formState: { errors },
     setValue,
+    watch,
     reset,
   } = useForm<CashForm>({
     resolver: zodResolver(cashOutSchema),
     defaultValues: { email: "", amount: 0 },
   });
 
+  const searchQuery = watch("email");
+
   // Search users when typing
   useEffect(() => {
-    if (searchQuery.length < 2) {
+    if (!searchQuery) {
       setSearchResults(null);
       return;
     }
@@ -55,7 +57,6 @@ function cashOut() {
       refetch();
       reset();
       setSearchResults(null);
-      setSearchQuery("");
     } catch (error: any) {
       toast.error(error?.data?.message || "Something went wrong");
     }
@@ -76,7 +77,6 @@ function cashOut() {
           {...register("email")}
           placeholder="Enter user email"
           className="w-full px-4 py-2 border rounded-md focus:ring-2 focus:ring-primary focus:outline-none mb-1"
-          onChange={(e) => setSearchQuery(e.target.value)}
           onFocus={() => setIsFocused(true)}
           onBlur={() => setTimeout(() => setIsFocused(false), 150)}
         />
@@ -84,21 +84,18 @@ function cashOut() {
 
         {isFocused && searchResults && searchResults?.users?.length > 0 && (
           <div className="absolute top-22 w-[16rem] md:top-26 md:w-[25rem] bg-primary p-2 rounded-md h-40 overflow-y-scroll">
-            <ul className="max-h-40 overflow-y-auto mb-2 flex flex-col gap-2">
-              {searchResults?.users.map((user, index) => (
-                <li
-                  key={index}
-                  className="p-2 cursor-pointer text-black border border-gray-800 rounded-md"
-                  onClick={() => {
-                    setValue("email", user.email);
-                    setSearchResults(null);
-                    setSearchQuery("");
-                  }}
-                >
-                  {user.email}
-                </li>
-              ))}
-            </ul>
+            {searchResults?.users.map((user, index) => (
+              <h2
+                key={index}
+                className="p-2 mb-2 cursor-pointer text-black border border-gray-800 rounded-md"
+                onClick={() => {
+                  setValue("email", user.email);
+                  setSearchResults(null);
+                }}
+              >
+                {user.email}
+              </h2>
+            ))}
           </div>
         )}
 
@@ -111,7 +108,7 @@ function cashOut() {
         />
         {errors.amount && <p className="text-red-500 text-sm mt-2">{errors.amount.message}</p>}
 
-        <button type="submit" className="mt-4 w-full bg-primary py-2 rounded-md font-semibold hover:bg-primary/90 transition cursor-pointer text-black">
+        <button type="submit" disabled={cashOutLoading} className="mt-4 w-full bg-primary py-2 rounded-md font-semibold hover:bg-primary/90 transition cursor-pointer text-black">
           Withdraw
         </button>
       </form>

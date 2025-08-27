@@ -6,6 +6,12 @@
 @theme {
   --font-sans: "Bricolage Grotesque", sans-serif;
 }
+.driver-popover {
+  background-color: var(--primary) !important;
+  color: #000 !important;
+  border-radius: 12px;
+}
+
 
 body {
   font-family: var(--font-sans);
