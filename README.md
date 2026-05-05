@@ -1,69 +1,80 @@
-# React + TypeScript + Vite
+# 💸 Digital Wallet System Frontned || [Backend](https://github.com/YeasinWebDev/a5-backend) || [Live](https://a5-frontend-two.vercel.app)  
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A secure, modular, role-based backend API for a digital wallet platform. Built with **react**, **tailwind css**, **Shadcn**.  
 
-Currently, two official plugins are available:
+---
+## 👥 Test User Roles
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+| Role  | Email                    | Password |
+|-------|--------------------------|----------|
+| Admin | ar9485727@gmail.com      | 123456   |
+| Agent | yeasin@gmail.com         | 123456   |
+| User  | arafat@gmail.com         | 123456   |
+---
 
-## Expanding the ESLint configuration
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## 🚀 Features
 
-```js
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+- 🔐 JWT-based Authentication (User, Agent, Admin)
+- 🧂 Secure Password Hashing with Bcrypt
+- 🏦 Wallet Creation and Management
+- 💳 Transactions (Top-up, Withdraw, Send, Cash-in, Cash-out)
+- 🎭 Role-based Access Control (RBAC)
+- 📦 Modular Project Structure
+- 🧾 Full Transaction History & Wallet Logs
+- ⚙️ Admin Controls (Block Wallet, Approve Agents, etc.)
 
-      // Remove tseslint.configs.recommended and replace with this
-      ...tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      ...tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      ...tseslint.configs.stylisticTypeChecked,
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+---
+
+## 🛠️ Tech Stack
+
+- react
+- tailwind
+- shadcn
+- radix ui
+- axios
+- driver.js
+- zod
+
+---  
+
+## ⚙️ Getting Started
+
+### 1. Clone the Repository
+
+```bash
+git clone https://github.com/YeasinWebDev/a5-frontend.git
+cd a5-frontend
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+### 2.Install Dependencies
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+npm install
 ```
+
+### 3.Environment Variables
+
+```bash
+VITE_BACKEND_URL=
+```
+
+### 4.Start the Server
+
+```bash
+npm run dev
+```
+
+## 📧 Contact
+If you have any questions or suggestions, feel free to reach out!  
+
+* Portfolio : [Yeasin Arafat](https://yeasin-arafat-portfolio.netlify.app)
+* LinkedIn: [Yeasin Arafat](https://www.linkedin.com/in/yeasinarafat121)
+
+
+
+
+
+
+
