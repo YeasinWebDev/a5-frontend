@@ -7,6 +7,7 @@ import { generateRoutes } from "@/utils/generateRoutes.tsx";
 import { WithAuth } from "@/utils/WithAuth.tsx";
 import userSidebar from "./userSidebar.tsx";
 import agentSidebar from "./agentSidebar.tsx";
+import Profile from "@/pages/Profile.tsx";
 
 const App = lazy(() => import("../App.tsx"));
 const Home = lazy(() => import("../pages/Home.tsx"));
@@ -72,6 +73,14 @@ export const router = createBrowserRouter([
           </Suspense>
         ),
       },
+      {
+        path: "profile",
+        element: (
+          <Suspense fallback={<Loader />}>
+            <Profile/>
+          </Suspense>
+        ),
+      }
     ],
   },
   {
