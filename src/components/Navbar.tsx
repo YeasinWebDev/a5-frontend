@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import Logo from "@/assets/images/logo.png";
-import { Link, useLocation } from "react-router";
+import { Link, useLocation, useNavigate } from "react-router";
 import { FiMenu, FiX } from "react-icons/fi";
 import { ModeToggle } from "./ModeToggle";
 import { authApi, useLogOutMutation, useMeQuery } from "@/redux/feature/authApi";
@@ -24,6 +24,7 @@ function Navbar() {
   const { data: me } = useMeQuery({});
   const [logout] = useLogOutMutation();
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const isActive = (path: string) => location.pathname === path;
   const dashboardRoute = me?.data?.user?.role;
@@ -90,6 +91,7 @@ function Navbar() {
       localStorage.removeItem("isNewUser");
 
       toast.success("User logged out successfully");
+      navigate("/login");
     } catch (error: any) {
       toast.error(error.data.message);
     }
